@@ -13,17 +13,34 @@ import time
 import json
 from datetime import datetime
 import logging
+import os
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class PhishingDataCollector:
-    def __init__(self):
+    def __init__(self, output_dir="ml-training/training-data"):
+        self.output_dir = output_dir
         self.phishing_urls = []
         self.legitimate_urls = []
         self.features_dataset = []
-        
+        # Setup session with retries
+        self.session = requests.Session()
+        retries = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504])
+        self.session.mount('http://', HTTPAdapter(max_retries=retries))
+        self.session.mount('https://', HTTPAdapter(max_retries=retries))
+
+    def validate_url(self, url):
+        """Validate URL format"""
+        try:
+            parsed = urlparse(url)
+            return bool(parsed.scheme in ['http', 'https'] and parsed.netloc)
+        except Exception:
+            return False
+
     def collect_phishing_urls(self):
         """Collect known phishing URLs from multiple sources"""
         logger.info("Collecting phishing URLs from threat intelligence sources...")
@@ -37,8 +54,9 @@ class PhishingDataCollector:
         # Source 3: Manual curated list for training
         manual_phishing = self.get_manual_phishing_samples()
         
-        self.phishing_urls = list(set(phishtank_urls + openphish_urls + manual_phishing))
-        logger.info(f"Collected {len(self.phishing_urls)} phishing URLs")
+        # Combine and validate URLs
+        self.phishing_urls = list(set([url for url in phishtank_urls + openphish_urls + manual_phishing if self.validate_url(url)]))
+        logger.info(f"Collected {len(self.phishing_urls)} valid phishing URLs")
         
         return self.phishing_urls
     
@@ -55,8 +73,9 @@ class PhishingDataCollector:
         # Source 3: Major corporations and services
         corporate_sites = self.get_corporate_websites()
         
-        self.legitimate_urls = list(set(top_sites + trusted_domains + corporate_sites))
-        logger.info(f"Collected {len(self.legitimate_urls)} legitimate URLs")
+        # Combine and validate URLs
+        self.legitimate_urls = list(set([url for url in top_sites + trusted_domains + corporate_sites if self.validate_url(url)]))
+        logger.info(f"Collected {len(self.legitimate_urls)} valid legitimate URLs")
         
         return self.legitimate_urls
     
@@ -65,14 +84,16 @@ class PhishingDataCollector:
         try:
             # Note: Replace with actual PhishTank API key
             api_url = "http://data.phishtank.com/data/online-valid.json"
-            response = requests.get(api_url, timeout=30)
+            headers = {'User-Agent': 'PhishGuardAI/1.0'}
+            response = self.session.get(api_url, headers=headers, timeout=30)
             
             if response.status_code == 200:
                 data = response.json()
                 urls = [entry['url'] for entry in data[:1000]]  # Limit for training
+                time.sleep(1)  # Rate limiting
                 return urls
             else:
-                logger.warning("Failed to fetch PhishTank data")
+                logger.warning(f"Failed to fetch PhishTank data: HTTP {response.status_code}")
                 return []
                 
         except Exception as e:
@@ -83,13 +104,15 @@ class PhishingDataCollector:
         """Fetch phishing URLs from OpenPhish feed"""
         try:
             api_url = "https://openphish.com/feed.txt"
-            response = requests.get(api_url, timeout=30)
+            headers = {'User-Agent': 'PhishGuardAI/1.0'}
+            response = self.session.get(api_url, headers=headers, timeout=30)
             
             if response.status_code == 200:
                 urls = response.text.strip().split('\n')[:500]  # Limit for training
+                time.sleep(1)  # Rate limiting
                 return [url.strip() for url in urls if url.strip()]
             else:
-                logger.warning("Failed to fetch OpenPhish data")
+                logger.warning(f"Failed to fetch OpenPhish data: HTTP {response.status_code}")
                 return []
                 
         except Exception as e:
@@ -113,7 +136,6 @@ class PhishingDataCollector:
     
     def fetch_top_websites(self):
         """Get top legitimate websites"""
-        # Simulate fetching from Alexa/Tranco top sites
         top_sites = [
             "https://www.google.com",
             "https://www.youtube.com", 
@@ -132,7 +154,7 @@ class PhishingDataCollector:
             "https://www.paypal.com"
         ]
         
-        # Add subpages for more variety
+        # Add subpages for variety
         subpages = []
         for site in top_sites[:10]:
             subpages.extend([
@@ -171,41 +193,61 @@ class PhishingDataCollector:
         ]
     
     def save_datasets(self):
-        """Save collected URLs to files"""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        """Save collected URLs and labels to files"""
+        try:
+            # Ensure output directory exists
+            os.makedirs(self.output_dir, exist_ok=True)
+            
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            
+            # Save phishing URLs and labels
+            phishing_file = f"{self.output_dir}/phishing_urls_{timestamp}.txt"
+            phishing_labels_file = f"{self.output_dir}/phishing_labels_{timestamp}.txt"
+            with open(phishing_file, 'w') as f_urls, open(phishing_labels_file, 'w') as f_labels:
+                for url in self.phishing_urls:
+                    f_urls.write(f"{url}\n")
+                    f_labels.write("1\n")  # Phishing = 1
+            
+            # Save legitimate URLs and labels
+            legitimate_file = f"{self.output_dir}/legitimate_urls_{timestamp}.txt"
+            legitimate_labels_file = f"{self.output_dir}/legitimate_labels_{timestamp}.txt"
+            with open(legitimate_file, 'w') as f_urls, open(legitimate_labels_file, 'w') as f_labels:
+                for url in self.legitimate_urls:
+                    f_urls.write(f"{url}\n")
+                    f_labels.write("0\n")  # Legitimate = 0
+            
+            logger.info(f"Datasets saved: {phishing_file}, {legitimate_file}")
+            logger.info(f"Labels saved: {phishing_labels_file}, {legitimate_labels_file}")
+            
+            return phishing_file, legitimate_file, phishing_labels_file, legitimate_labels_file
         
-        # Save phishing URLs
-        phishing_file = f"training-data/phishing_urls_{timestamp}.txt"
-        with open(phishing_file, 'w') as f:
-            for url in self.phishing_urls:
-                f.write(f"{url}\n")
-        
-        # Save legitimate URLs  
-        legitimate_file = f"training-data/legitimate_urls_{timestamp}.txt"
-        with open(legitimate_file, 'w') as f:
-            for url in self.legitimate_urls:
-                f.write(f"{url}\n")
-        
-        logger.info(f"Datasets saved: {phishing_file}, {legitimate_file}")
-        
-        return phishing_file, legitimate_file
+        except Exception as e:
+            logger.error(f"Failed to save datasets: {e}")
+            raise
 
 def main():
     """Main data collection pipeline"""
-    collector = PhishingDataCollector()
-    
-    # Collect datasets
-    phishing_urls = collector.collect_phishing_urls()
-    legitimate_urls = collector.collect_legitimate_urls()
-    
-    # Save to files
-    collector.save_datasets()
-    
-    # Print summary
-    print(f"\n📊 Data Collection Complete!")
-    print(f"Phishing URLs: {len(phishing_urls)}")
-    print(f"Legitimate URLs: {len(legitimate_urls)}")
-    print(f"Total samples: {len(phishing_urls) + len(legitimate_urls)}")
+    try:
+        collector = PhishingDataCollector()
+        
+        # Collect datasets
+        phishing_urls = collector.collect_phishing_urls()
+        legitimate_urls = collector.collect_legitimate_urls()
+        
+        # Save to files
+        phishing_file, legitimate_file, phishing_labels, legitimate_labels = collector.save_datasets()
+        
+        # Print summary
+        print(f"\n📊 Data Collection Complete!")
+        print(f"Phishing URLs: {len(phishing_urls)}")
+        print(f"Legitimate URLs: {len(legitimate_urls)}")
+        print(f"Total samples: {len(phishing_urls) + len(legitimate_urls)}")
+        print(f"Files saved: {phishing_file}, {legitimate_file}")
+        print(f"Labels saved: {phishing_labels}, {legitimate_labels}")
+        
+    except Exception as e:
+        logger.error(f"Data collection pipeline failed: {e}")
+        raise
 
 if __name__ == "__main__":
     main()
