@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard AI - Cyber Defense Matrix</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cyber-matrix">
+        <!-- Animated Background -->
+        <div class="matrix-bg">
+            <canvas id="matrixCanvas"></canvas>
+            <div class="scan-lines"></div>
+            <div class="grid-overlay"></div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Hacker-Style Header -->
+            <header class="cyber-header">
+                <div class="header-glitch">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-controls">
+                                <span class="control red"></span>
+                                <span class="control yellow"></span>
+                                <span class="control green"></span>
+                            </div>
+                            <div class="terminal-title">PHISHGUARD.AI_NEURAL_MATRIX</div>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="logo-section">
+                                <div class="cyber-logo">
+                                    <div class="logo-glow">
+                                        <svg class="logo-svg" viewBox="0 0 100 100">
+                                            <defs>
+                                                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" style="stop-color:#00ff41"/>
+                                                    <stop offset="50%" style="stop-color:#00d4ff"/>
+                                                    <stop offset="100%" style="stop-color:#ff0080"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" 
+                                                     fill="none" stroke="url(#logoGrad)" stroke-width="2" 
+                                                     class="logo-hex"/>
+                                            <circle cx="50" cy="50" r="15" fill="url(#logoGrad)" opacity="0.8"/>
+                                            <text x="50" y="55" text-anchor="middle" fill="#000" 
+                                                  font-family="Orbitron" font-size="8" font-weight="bold">AI</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="title-section">
+                                    <h1 class="cyber-title">
+                                        <span class="glitch-text" data-text="PHISHGUARD">PHISHGUARD</span>
+                                        <span class="ai-suffix">_AI</span>
+                                    </h1>
+                                    <div class="subtitle-container">
+                                        <span class="typing-text">CYBER_DEFENSE_MATRIX_ACTIVE</span>
+                                        <span class="cursor-blink">_</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="system-status">
+                                <div class="status-line">
+                                    <span class="status-prompt">root@phishguard:~$</span>
+                                    <span class="status-indicator" id="systemStatus">
+                                        <span class="status-dot pulsing"></span>
+                                        <span class="status-text" id="statusText">SCANNING...</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Cyber Interface -->
+            <main class="cyber-main">
+                <!-- Threat Analysis HUD -->
+                <section class="threat-hud">
+                    <div class="hud-header">
+                        <h2 class="hud-title">
+                            <span class="hacker-icon">⚡</span>
+                            THREAT_ANALYSIS_MATRIX
+                        </h2>
+                        <button class="cyber-btn refresh-btn" id="refreshAnalysis">
+                            <span class="btn-glow">RESCAN</span>
+                        </button>
+                    </div>
+                    
+                    <div class="analysis-hud">
+                        <div class="target-info">
+                            <div class="target-details">
+                                <div class="target-label">TARGET_URL:</div>
+                                <div class="target-url" id="targetUrl">
+                                    <span class="url-protocol" id="urlProtocol">https://</span>
+                                    <span class="url-domain" id="urlDomain">SCANNING...</span>
+                                </div>
+                                <div class="target-status" id="targetStatus">NEURAL_ANALYSIS_IN_PROGRESS</div>
+                            </div>
+                            
+                            <!-- Cyber Risk Gauge -->
+                            <div class="risk-gauge-container">
+                                <div class="risk-gauge">
+                                    <div class="gauge-bg"></div>
+                                    <div class="gauge-fill" id="riskGaugeFill"></div>
+                                    <div class="gauge-center">
+                                        <div class="risk-score" id="riskScore">--</div>
+                                        <div class="risk-label">RISK_LVL</div>
+                                    </div>
+                                    <div class="gauge-ticks">
+                                        <div class="tick" style="--angle: 0deg;"></div>
+                                        <div class="tick" style="--angle: 36deg;"></div>
+                                        <div class="tick" style="--angle: 72deg;"></div>
+                                        <div class="tick" style="--angle: 108deg;"></div>
+                                        <div class="tick" style="--angle: 144deg;"></div>
+                                        <div class="tick" style="--angle: 180deg;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Threat Matrix Display -->
+                        <div class="threat-matrix" id="threatMatrix">
+                            <div class="matrix-header">
+                                <span class="matrix-icon">🛡️</span>
+                                <span class="matrix-title" id="threatLevel">THREAT_ASSESSMENT</span>
+                            </div>
+                            <div class="matrix-content" id="threatContent">
+                                <div class="scanning-animation">
+                                    <div class="scan-bar"></div>
+                                    <div class="scan-text">NEURAL_NETWORK_PROCESSING...</div>
+                                </div>
+                            </div>
+                            <div class="vulnerabilities" id="vulnerabilities" style="display: none;">
+                                <div class="vuln-header">DETECTED_VULNERABILITIES:</div>
+                                <div class="vuln-list" id="vulnList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cyber Action Panel -->
+                <section class="action-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <span class="hacker-icon">⚔️</span>
+                            DEFENSIVE_OPERATIONS
+                        </h2>
+                    </div>
+                    
+                    <div class="action-grid">
+                        <button class="cyber-action-btn danger-btn" id="reportThreatBtn">
+                            <div class="btn-bg"></div>
+                            <div class="btn-content">
+                                <div class="btn-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/>
+                                    </svg>
+                                </div>
+                                <div class="btn-text">
+                                    <span class="btn-title">REPORT_THREAT</span>
+                                    <span class="btn-subtitle">Submit to neural network</span>
+                                </div>
+                            </div>
+                            <div class="btn-particles"></div>
+                        </button>
+                        
+                        <button class="cyber-action-btn safe-btn" id="whitelistBtn">
+                            <div class="btn-bg"></div>
+                            <div class="btn-content">
+                                <div class="btn-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                                    </svg>
+                                </div>
+                                <div class="btn-text">
+                                    <span class="btn-title">WHITELIST_TARGET</span>
+                                    <span class="btn-subtitle">Add to trusted matrix</span>
+                                </div>
+                            </div>
+                            <div class="btn-particles"></div>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- System Stats HUD -->
+                <section class="stats-hud">
+                    <div class="hud-header">
+                        <h2 class="hud-title">
+                            <span class="hacker-icon">📊</span>
+                            SYSTEM_PERFORMANCE_METRICS
+                        </h2>
+                    </div>
+                    
+                    <div class="stats-matrix">
+                        <div class="stat-node">
+                            <div class="stat-glow"></div>
+                            <div class="stat-content">
+                                <div class="stat-icon">🔥</div>
+                                <div class="stat-value" id="threatsNeutralized">0</div>
+                                <div class="stat-label">THREATS_NEUTRALIZED</div>
+                            </div>
+                            <div class="stat-connections"></div>
+                        </div>
+                        
+                        <div class="stat-node">
+                            <div class="stat-glow"></div>
+                            <div class="stat-content">
+                                <div class="stat-icon">🌐</div>
+                                <div class="stat-value" id="nodesScanned">0</div>
+                                <div class="stat-label">NODES_SCANNED</div>
+                            </div>
+                            <div class="stat-connections"></div>
+                        </div>
+                        
+                        <div class="stat-node">
+                            <div class="stat-glow"></div>
+                            <div class="stat-content">
+                                <div class="stat-icon">⏱️</div>
+                                <div class="stat-value" id="uptime">0</div>
+                                <div class="stat-label">UPTIME_DAYS</div>
+                            </div>
+                            <div class="stat-connections"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Threat Log Terminal -->
+                <section class="threat-log">
+                    <div class="terminal-log">
+                        <div class="log-header">
+                            <div class="log-title">
+                                <span class="hacker-icon">📡</span>
+                                NEURAL_THREAT_LOG
+                            </div>
+                            <button class="log-clear-btn" id="clearLogBtn">PURGE</button>
+                        </div>
+                        <div class="log-content" id="threatLogContent">
+                            <div class="log-entry system-entry">
+                                <span class="log-time">[00:00:00]</span>
+                                <span class="log-level success">INFO</span>
+                                <span class="log-message">PHISHGUARD_AI_NEURAL_MATRIX_ONLINE</span>
+                            </div>
+                            <div class="log-entry system-entry">
+                                <span class="log-time">[00:00:01]</span>
+                                <span class="log-level info">SCAN</span>
+                                <span class="log-message">AWAITING_THREAT_VECTORS...</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Cyber Footer -->
+            <footer class="cyber-footer">
+                <div class="footer-terminal">
+                    <div class="footer-content">
+                        <div class="system-controls">
+                            <button class="control-btn" id="configBtn">
+                                <span class="btn-glow">CONFIG</span>
+                            </button>
+                            <button class="control-btn" id="helpBtn">
+                                <span class="btn-glow">HELP</span>
+                            </button>
+                            <button class="control-btn" id="aboutBtn">
+                                <span class="btn-glow">ABOUT</span>
+                            </button>
+                        </div>
+                        <div class="system-info">
+                            <span class="version-tag">v1.0.0_NEURAL</span>
+                            <span class="build-tag">BUILD_2024</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Cyber Settings Modal -->
+        <div class="modal-overlay cyber-modal" id="settingsModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <span class="glitch-text" data-text="SYSTEM_CONFIG">SYSTEM_CONFIG</span>
+                    </h3>
+                    <button class="modal-close" id="closeSettingsBtn">
+                        <span class="close-glow">✕</span>
+                    </button>
+                </div>
+                
+                <div class="modal-content">
+                    <div class="config-section">
+                        <h4 class="config-title">NEURAL_DEFENSE_PARAMETERS</h4>
+                        
+                        <div class="config-item">
+                            <div class="config-info">
+                                <label class="config-label">REALTIME_SCANNING</label>
+                                <div class="config-desc">Continuous neural monitoring</div>
+                            </div>
+                            <div class="cyber-toggle">
+                                <input type="checkbox" id="enableRealTime" class="toggle-input">
+                                <label for="enableRealTime" class="toggle-label">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-glow"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-item">
+                            <div class="config-info">
+                                <label class="config-label">THREAT_ALERTS</label>
+                                <div class="config-desc">Neural network notifications</div>
+                            </div>
+                            <div class="cyber-toggle">
+                                <input type="checkbox" id="enableNotifications" class="toggle-input">
+                                <label for="enableNotifications" class="toggle-label">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-glow"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-item">
+                            <div class="config-info">
+                                <label class="config-label">AUTO_NEUTRALIZE</label>
+                                <div class="config-desc">Automatic threat elimination</div>
+                            </div>
+                            <div class="cyber-toggle">
+                                <input type="checkbox" id="enableAutoBlock" class="toggle-input">
+                                <label for="enableAutoBlock" class="toggle-label">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-glow"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-item">
+                            <div class="config-info">
+                                <label class="config-label">THREAT_SENSITIVITY</label>
+                                <div class="config-desc">Neural detection threshold</div>
+                            </div>
+                            <select id="protectionLevel" class="cyber-select">
+                                <option value="low">LOW_SECURITY</option>
+                                <option value="medium">BALANCED_MATRIX</option>
+                                <option value="high">MAXIMUM_DEFENSE</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="config-section">
+                        <h4 class="config-title">TRUSTED_NETWORK_NODES</h4>
+                        
+                        <div class="whitelist-interface">
+                            <div class="input-group">
+                                <input type="text" id="whitelistInput" class="cyber-input" 
+                                       placeholder="TARGET_DOMAIN.COM">
+                                <button class="add-btn" id="addWhitelistBtn">
+                                    <span class="btn-glow">ADD_NODE</span>
+                                </button>
+                            </div>
+                            
+                            <div class="trusted-nodes" id="trustedNodes">
+                                <div class="nodes-empty">NO_TRUSTED_NODES_CONFIGURED</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="cyber-btn secondary" id="resetConfigBtn">
+                        <span class="btn-glow">RESET_MATRIX</span>
+                    </button>
+                    <button class="cyber-btn primary" id="saveConfigBtn">
+                        <span class="btn-glow">SAVE_CONFIG</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Modal -->
+        <div class="modal-overlay cyber-modal" id="aboutModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <span class="glitch-text" data-text="SYSTEM_INFO">SYSTEM_INFO</span>
+                    </h3>
+                    <button class="modal-close" id="closeAboutBtn">
+                        <span class="close-glow">✕</span>
+                    </button>
+                </div>
+                
+                <div class="modal-content">
+                    <div class="about-matrix">
+                        <div class="about-logo-section">
+                            <div class="about-logo-glow">
+                                <svg class="about-logo" viewBox="0 0 100 100">
+                                    <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" 
+                                             fill="none" stroke="#00ff41" stroke-width="2"/>
+                                    <circle cx="50" cy="50" r="20" fill="#00ff41" opacity="0.3"/>
+                                    <text x="50" y="55" text-anchor="middle" fill="#00ff41" 
+                                          font-family="Orbitron" font-size="12" font-weight="bold">AI</text>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="system-specs">
+                            <h4 class="specs-title">PHISHGUARD_AI_v1.0.0_NEURAL</h4>
+                            <div class="specs-content">
+                                <p class="specs-desc">
+                                    Advanced artificial intelligence neural matrix designed for 
+                                    real-time threat detection and cyber defense operations.
+                                </p>
+                                
+                                <div class="feature-matrix">
+                                    <h5 class="feature-title">CORE_CAPABILITIES:</h5>
+                                    <div class="feature-list">
+                                        <div class="feature-item">🧠 Neural threat analysis</div>
+                                        <div class="feature-item">⚡ Real-time processing</div>
+                                        <div class="feature-item">🔒 Zero-trust architecture</div>
+                                        <div class="feature-item">📡 Distributed intelligence</div>
+                                        <div class="feature-item">🛡️ Autonomous defense</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="performance-metrics">
+                                    <div class="metric">
+                                        <span class="metric-value">98.7%</span>
+                                        <span class="metric-label">ACCURACY_RATE</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-value">&lt;50ms</span>
+                                        <span class="metric-label">RESPONSE_TIME</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-links">
+                        <button class="cyber-link-btn" id="visitMatrixBtn">
+                            <span class="btn-glow">ACCESS_MATRIX</span>
+                        </button>
+                        <button class="cyber-link-btn" id="viewCodeBtn">
+                            <span class="btn-glow">VIEW_SOURCE</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div class="toast-matrix" id="toastMatrix"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="popup.js"></script>
+</body>
+</html>
