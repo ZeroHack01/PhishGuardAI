@@ -1,0 +1,49 @@
+# PhishGuardAI .gitignore
+# Keeping the repo clean, hacker-style
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyc
+.Python
+env/
+venv/
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node.js artifacts
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build and distribution
+build/
+phishguardai.zip
+dist/
+
+# ML training data and models
+ml-training/data/
+ml-training/models/
+*.h5
+*.tflite
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sensitive or local config
+.env
+*.local
