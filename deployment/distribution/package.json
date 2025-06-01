@@ -1,0 +1,23 @@
+{
+  "name": "phishguardai",
+  "version": "1.0.0",
+  "description": "PhishGuardAI: A neon-lit, hacker-forged Chrome extension to shred phishing threats with AI precision.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha testing/unit-tests/*.js testing/integration-tests/*.js testing/performance-tests/*.js --reporter spec",
+    "test:unit": "mocha testing/unit-tests/*.js --reporter spec",
+    "test:integration": "mocha testing/integration-tests/*.js --reporter spec",
+    "test:performance": "mocha testing/performance-tests/*.js --reporter spec",
+    "build": "node deployment/build-scripts/build.js"
+  },
+  "author": "ZeroHack01",
+  "license": "MIT",
+  "devDependencies": {
+    "archiver": "^6.0.2",
+    "chai": "^4.3.7",
+    "chalk": "^4.1.2",
+    "jsdom": "^24.0.0",
+    "mocha": "^10.2.0",
+    "sinon": "^17.0.1"
+  }
+}
