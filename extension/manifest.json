@@ -1,0 +1,89 @@
+{
+  "manifest_version": 3,
+  "name": "PhishGuard AI - Advanced Phishing Protection",
+  "version": "1.0.0",
+  "description": "AI-powered phishing detection that analyzes websites in real-time to protect against credential theft and social engineering attacks.",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications",
+    "webNavigation",
+    "tabs",
+    "background"
+  ],
+  
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  
+  "background": {
+    "service_worker": "background/background.js",
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "PhishGuard AI - Check website safety",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "models/*.json",
+        "models/*.bin",
+        "icons/*.png"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  
+  "author": "PhishGuard AI Team",
+  "homepage_url": "https://phishguard-ai.com",
+  
+  "commands": {
+    "toggle-protection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P",
+        "mac": "Command+Shift+P"
+      },
+      "description": "Toggle PhishGuard AI protection"
+    },
+    "quick-scan": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Quick scan current page"
+    }
+  },
+  
+  "options_page": "popup/popup.html",
+  
+  "minimum_chrome_version": "88"
+}
