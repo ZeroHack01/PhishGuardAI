@@ -1,0 +1,10 @@
+# PhishGuardAI Python Dependencies
+# Powering the ML and threat intel pipelines with hacker precision
+
+beautifulsoup4==4.12.3  # Web scraping for data collection
+colorama==0.4.6        # Neon-colored console logs for threat feeds
+pandas==2.2.2          # Data manipulation for feature engineering
+requests==2.31.0       # HTTP requests for data collection and threat feeds
+scikit-learn==1.5.0    # Machine learning for model training
+tensorflow==2.16.1     # Deep learning for model training
+tensorflowjs==4.20.0   # Model conversion to TensorFlow.js
