@@ -1,42 +1,36 @@
 {
   "manifest_version": 3,
   "name": "PhishGuardAI",
-  "version": "1.0.2",
-  "description": "AI-powered phishing detection extension",
+  "version": "1.0.0",
+  "description": "A Chrome extension to detect phishing websites using AI-driven analysis.",
   "permissions": [
     "activeTab",
-    "storage",
-    "notifications",
-    "tabs",
-    "webRequest"
+    "scripting"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "background": {
-    "service_worker": "background/background.js"
-  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/scripts.js"]
+      "js": ["content/scripts.js"],
+      "run_at": "document_end"
     }
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
-    "default_popup": "popup/index.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
-  },
-  "web_accessible_resources": [
-    {
-      "resources": ["models/phishing_model.tjs"],
-      "matches": ["<all_urls>"]
-    }
-  ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self';"
   }
 }
