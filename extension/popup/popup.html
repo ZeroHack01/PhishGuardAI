@@ -11,16 +11,12 @@
 </head>
 <body>
     <div class="cyber-matrix">
-        <!-- Animated Background -->
         <div class="matrix-bg">
             <canvas id="matrixCanvas"></canvas>
             <div class="scan-lines"></div>
             <div class="grid-overlay"></div>
         </div>
-
-        <!-- Main Container -->
         <div class="container">
-            <!-- Hacker-Style Header -->
             <header class="cyber-header">
                 <div class="header-glitch">
                     <div class="terminal-window">
@@ -77,10 +73,7 @@
                     </div>
                 </div>
             </header>
-
-            <!-- Main Cyber Interface -->
             <main class="cyber-main">
-                <!-- Threat Analysis HUD -->
                 <section class="threat-hud">
                     <div class="hud-header">
                         <h2 class="hud-title">
@@ -91,7 +84,6 @@
                             <span class="btn-glow">RESCAN</span>
                         </button>
                     </div>
-                    
                     <div class="analysis-hud">
                         <div class="target-info">
                             <div class="target-details">
@@ -102,8 +94,6 @@
                                 </div>
                                 <div class="target-status" id="targetStatus">NEURAL_ANALYSIS_IN_PROGRESS</div>
                             </div>
-                            
-                            <!-- Cyber Risk Gauge -->
                             <div class="risk-gauge-container">
                                 <div class="risk-gauge">
                                     <div class="gauge-bg"></div>
@@ -123,8 +113,6 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Threat Matrix Display -->
                         <div class="threat-matrix" id="threatMatrix">
                             <div class="matrix-header">
                                 <span class="matrix-icon">🛡️</span>
@@ -143,8 +131,6 @@
                         </div>
                     </div>
                 </section>
-
-                <!-- Cyber Action Panel -->
                 <section class="action-panel">
                     <div class="panel-header">
                         <h2 class="panel-title">
@@ -152,7 +138,6 @@
                             DEFENSIVE_OPERATIONS
                         </h2>
                     </div>
-                    
                     <div class="action-grid">
                         <button class="cyber-action-btn danger-btn" id="reportThreatBtn">
                             <div class="btn-bg"></div>
@@ -169,7 +154,6 @@
                             </div>
                             <div class="btn-particles"></div>
                         </button>
-                        
                         <button class="cyber-action-btn safe-btn" id="whitelistBtn">
                             <div class="btn-bg"></div>
                             <div class="btn-content">
@@ -187,8 +171,6 @@
                         </button>
                     </div>
                 </section>
-
-                <!-- System Stats HUD -->
                 <section class="stats-hud">
                     <div class="hud-header">
                         <h2 class="hud-title">
@@ -196,7 +178,6 @@
                             SYSTEM_PERFORMANCE_METRICS
                         </h2>
                     </div>
-                    
                     <div class="stats-matrix">
                         <div class="stat-node">
                             <div class="stat-glow"></div>
@@ -207,7 +188,6 @@
                             </div>
                             <div class="stat-connections"></div>
                         </div>
-                        
                         <div class="stat-node">
                             <div class="stat-glow"></div>
                             <div class="stat-content">
@@ -217,7 +197,6 @@
                             </div>
                             <div class="stat-connections"></div>
                         </div>
-                        
                         <div class="stat-node">
                             <div class="stat-glow"></div>
                             <div class="stat-content">
@@ -229,8 +208,6 @@
                         </div>
                     </div>
                 </section>
-
-                <!-- Threat Log Terminal -->
                 <section class="threat-log">
                     <div class="terminal-log">
                         <div class="log-header">
@@ -255,8 +232,6 @@
                     </div>
                 </section>
             </main>
-
-            <!-- Cyber Footer -->
             <footer class="cyber-footer">
                 <div class="footer-terminal">
                     <div class="footer-content">
@@ -272,15 +247,13 @@
                             </button>
                         </div>
                         <div class="system-info">
-                            <span class="version-tag">v1.0.0_NEURAL</span>
-                            <span class="build-tag">BUILD_2024</span>
+                            <span class="version-tag">v1.0.2_NEURAL</span>
+                            <span class="build-tag">BUILD_2025</span>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
-
-        <!-- Cyber Settings Modal -->
         <div class="modal-overlay cyber-modal" id="settingsModal">
             <div class="modal-container">
                 <div class="modal-header">
@@ -291,11 +264,9 @@
                         <span class="close-glow">✕</span>
                     </button>
                 </div>
-                
                 <div class="modal-content">
                     <div class="config-section">
                         <h4 class="config-title">NEURAL_DEFENSE_PARAMETERS</h4>
-                        
                         <div class="config-item">
                             <div class="config-info">
                                 <label class="config-label">REALTIME_SCANNING</label>
@@ -309,7 +280,6 @@
                                 </label>
                             </div>
                         </div>
-                        
                         <div class="config-item">
                             <div class="config-info">
                                 <label class="config-label">THREAT_ALERTS</label>
@@ -323,7 +293,6 @@
                                 </label>
                             </div>
                         </div>
-                        
                         <div class="config-item">
                             <div class="config-info">
                                 <label class="config-label">AUTO_NEUTRALIZE</label>
@@ -337,7 +306,6 @@
                                 </label>
                             </div>
                         </div>
-                        
                         <div class="config-item">
                             <div class="config-info">
                                 <label class="config-label">THREAT_SENSITIVITY</label>
@@ -350,10 +318,8 @@
                             </select>
                         </div>
                     </div>
-                    
                     <div class="config-section">
                         <h4 class="config-title">TRUSTED_NETWORK_NODES</h4>
-                        
                         <div class="whitelist-interface">
                             <div class="input-group">
                                 <input type="text" id="whitelistInput" class="cyber-input" 
@@ -362,14 +328,12 @@
                                     <span class="btn-glow">ADD_NODE</span>
                                 </button>
                             </div>
-                            
                             <div class="trusted-nodes" id="trustedNodes">
                                 <div class="nodes-empty">NO_TRUSTED_NODES_CONFIGURED</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
                 <div class="modal-footer">
                     <button class="cyber-btn secondary" id="resetConfigBtn">
                         <span class="btn-glow">RESET_MATRIX</span>
@@ -380,8 +344,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- About Modal -->
         <div class="modal-overlay cyber-modal" id="aboutModal">
             <div class="modal-container">
                 <div class="modal-header">
@@ -392,7 +354,6 @@
                         <span class="close-glow">✕</span>
                     </button>
                 </div>
-                
                 <div class="modal-content">
                     <div class="about-matrix">
                         <div class="about-logo-section">
@@ -406,15 +367,13 @@
                                 </svg>
                             </div>
                         </div>
-                        
                         <div class="system-specs">
-                            <h4 class="specs-title">PHISHGUARD_AI_v1.0.0_NEURAL</h4>
+                            <h4 class="specs-title">PHISHGUARD_AI_v1.0.2_NEURAL</h4>
                             <div class="specs-content">
                                 <p class="specs-desc">
                                     Advanced artificial intelligence neural matrix designed for 
                                     real-time threat detection and cyber defense operations.
                                 </p>
-                                
                                 <div class="feature-matrix">
                                     <h5 class="feature-title">CORE_CAPABILITIES:</h5>
                                     <div class="feature-list">
@@ -425,21 +384,19 @@
                                         <div class="feature-item">🛡️ Autonomous defense</div>
                                     </div>
                                 </div>
-                                
                                 <div class="performance-metrics">
                                     <div class="metric">
                                         <span class="metric-value">98.7%</span>
                                         <span class="metric-label">ACCURACY_RATE</span>
                                     </div>
                                     <div class="metric">
-                                        <span class="metric-value">&lt;50ms</span>
+                                        <span class="metric-value"><50ms</span>
                                         <span class="metric-label">RESPONSE_TIME</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="system-links">
                         <button class="cyber-link-btn" id="visitMatrixBtn">
                             <span class="btn-glow">ACCESS_MATRIX</span>
@@ -451,12 +408,8 @@
                 </div>
             </div>
         </div>
-
-        <!-- Toast Notifications -->
         <div class="toast-matrix" id="toastMatrix"></div>
     </div>
-
-    <!-- Scripts -->
     <script src="popup.js"></script>
 </body>
 </html>
