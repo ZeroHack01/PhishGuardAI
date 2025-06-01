@@ -1,0 +1,64 @@
+/* PhishGuardAI Phishing Model
+ * Neon-forged neural net for shredding phishing threats
+ * Placeholder model: replace with TensorFlow.js model from ml-training/model-conversion.py
+ * Input: [hasLoginForm, suspiciousKeywords, urlEntropy, externalLinks]
+ * Output: Phishing probability (0 to 1)
+ */
+
+import * as tf from '@tensorflow/tfjs';
+
+// Define a simple neural network for phishing detection
+const createPhishingModel = () => {
+  console.log('%c[PhishGuardAI Model] Initializing neural net...', 'color: #00f7ff; font-family: "Courier New"; font-weight: bold;');
+
+  const model = tf.sequential();
+  
+  // Input layer: 4 features
+  model.add(tf.layers.dense({
+    units: 16,
+    activation: 'relu',
+    inputShape: [4]
+  }));
+
+  // Hidden layer
+  model.add(tf.layers.dense({
+    units: 8,
+    activation: 'relu'
+  }));
+
+  // Output layer: binary classification (phishing probability)
+  model.add(tf.layers.dense({
+    units: 1,
+    activation: 'sigmoid'
+  }));
+
+  // Compile model
+  model.compile({
+    optimizer: tf.train.adam(),
+    loss: 'binaryCrossentropy',
+    metrics: ['accuracy']
+  });
+
+  console.log('%c[PhishGuardAI Model] Model compiled, ready for inference', 'color: #00ff00; font-family: "Courier New"; font-weight: bold;');
+  return model;
+};
+
+// Load or create model
+const loadModel = async () => {
+  try {
+    // Placeholder: Attempt to load pre-trained model (replace with actual model path)
+    // const model = await tf.loadLayersModel('path/to/phishing_model.json');
+    // console.log('%c[PhishGuardAI Model] Loaded pre-trained model', 'color: #ff00ff; font-family: "Courier New"; font-weight: bold;');
+    // return model;
+
+    // Fallback: Create new model (for placeholder purposes)
+    console.log('%c[PhishGuardAI Model] Using placeholder model', 'color: #ff0000; font-family: "Courier New"; font-weight: bold;');
+    return createPhishingModel();
+  } catch (error) {
+    console.log(`%c[PhishGuardAI Model] Error loading model: ${error.message}`, 'color: #ff0000; font-family: "Courier New"; font-weight: bold;');
+    return createPhishingModel();
+  }
+};
+
+// Export model for use in content/scripts.js
+export default loadModel;
