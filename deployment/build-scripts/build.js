@@ -1,11 +1,13 @@
 const fs = require('fs').promises;
 const path = require('path');
 const archiver = require('archiver');
+const chalk = require('chalk');
+
 const log = {
-  cyan: (msg) => console.log(chalk.cyan.bold(`[PhishGuardAI Build] ${msg}`)),
-  magenta: (msg) => console.log(chalk.magenta.bold(`[PhishGuardAI Build] ${msg}`)),
-  green: (msg) => console.log(chalk.green.bold(`[PhishGuardAI Build] ${msg}`)),
-  red: (msg) => console.log(chalk.red.bold(`[PhishGuardAI Build] ${msg}`))
+  cyan: (msg) => console.log(chalk.cyan(`[PhishGuardAI Build] ${msg}`)),
+  magenta: (msg) => console.log(chalk.magenta(`[PhishGuardAI Build] ${msg}`)),
+  green: (msg) => console.log(chalk.green(`[PhishGuardAI Build] ${msg}`)),
+  red: (msg) => console.log(chalk.red(`[PhishGuardAI Build] ${msg}`))
 };
 
 async function createBuildDir(buildDir) {
@@ -82,36 +84,22 @@ async function createZip(buildDir, outputPath) {
 }
 
 async function build() {
-  const rootDir = path.resolve(__dirname, '../..'); // PhishGuardAI/
-  const extensionDir = path.join(rootDir, 'extension'); // PhishGuardAI/extension/
+  const rootDir = path.resolve(__dirname, '../..');
+  const extensionDir = path.join(rootDir, 'extension');
   const buildDir = path.join(rootDir, 'build');
   const outputPath = path.join(rootDir, 'phishguardai.zip');
 
   try {
-    // Create build directory
     await createBuildDir(buildDir);
-
-    // Copy manifest.json from extension/
     const rootFiles = ['manifest.json'];
     await copyFiles(extensionDir, buildDir, rootFiles);
-
-    // Copy extension directories
-    const directories = [
-      'popup',
-      'content',
-      'background',
-      'models',
-      'icons'
-    ];
+    const directories = ['popup', 'content', 'background', 'models', 'icons'];
     for (const dir of directories) {
       const srcDir = path.join(extensionDir, dir);
       const destDir = path.join(buildDir, dir);
       await copyDirectory(srcDir, destDir);
     }
-
-    // Create ZIP archive
     await createZip(buildDir, outputPath);
-
     log.green('Build completed successfully');
   } catch (error) {
     log.red('Build failed');
