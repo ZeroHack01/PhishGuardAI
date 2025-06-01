@@ -1,8 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
 const archiver = require('archiver');
-const chalk = require('chalk');
-
 const log = {
   cyan: (msg) => console.log(chalk.cyan.bold(`[PhishGuardAI Build] ${msg}`)),
   magenta: (msg) => console.log(chalk.magenta.bold(`[PhishGuardAI Build] ${msg}`)),
@@ -83,37 +81,36 @@ async function createZip(buildDir, outputPath) {
   });
 }
 
-async function buildExtension() {
-  const rootDir = path.resolve(__dirname, '../..');
+async function build() {
+  const rootDir = path.resolve(__dirname, '../..'); // PhishGuardAI/
+  const extensionDir = path.join(rootDir, 'extension'); // PhishGuardAI/extension/
   const buildDir = path.join(rootDir, 'build');
-  const outputZip = path.join(rootDir, 'phishguardai.zip');
+  const outputPath = path.join(rootDir, 'phishguardai.zip');
 
   try {
     // Create build directory
     await createBuildDir(buildDir);
 
-    // Copy root files
+    // Copy manifest.json from extension/
     const rootFiles = ['manifest.json'];
-    await copyFiles(rootDir, buildDir, rootFiles);
+    await copyFiles(extensionDir, buildDir, rootFiles);
 
-    // Copy directories
+    // Copy extension directories
     const directories = [
       'popup',
       'content',
       'background',
       'models',
-      'threat-intel',
       'icons'
     ];
     for (const dir of directories) {
-      await copyDirectory(
-        path.join(rootDir, dir),
-        path.join(buildDir, dir)
-      );
+      const srcDir = path.join(extensionDir, dir);
+      const destDir = path.join(buildDir, dir);
+      await copyDirectory(srcDir, destDir);
     }
 
     // Create ZIP archive
-    await createZip(buildDir, outputZip);
+    await createZip(buildDir, outputPath);
 
     log.green('Build completed successfully');
   } catch (error) {
@@ -122,7 +119,7 @@ async function buildExtension() {
   }
 }
 
-buildExtension().catch(error => {
+build().catch(error => {
   log.red(`Build process terminated: ${error.message}`);
   process.exit(1);
 });
