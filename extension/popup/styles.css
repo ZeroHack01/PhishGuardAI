@@ -1,0 +1,143 @@
+:root {
+  --bg-dark: #0a0a0a;
+  --text-neon-cyan: #00f7ff;
+  --text-neon-magenta: #ff00ff;
+  --text-neon-green: #00ff00;
+  --accent-dark: #1c2526;
+  --button-bg: #00f7ff;
+  --button-hover: #ff00ff;
+  --status-safe: #00ff00;
+  --status-danger: #ff0000;
+  --bg-light: #ffffff;
+  --text-light: #000000;
+  --accent-light: #e0e0e0;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-neon-cyan);
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 15px;
+  width: 300px;
+  min-height: 200px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+body.light-mode {
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.5em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: glitch 1s linear infinite;
+  text-shadow: 0 0 5px var(--text-neon-magenta), 0 0 10px var(--text-neon-magenta);
+}
+
+@keyframes glitch {
+  2%, 64% {
+    transform: translate(2px, 0) skew(5deg);
+  }
+  4%, 60% {
+    transform: translate(-2px, 0) skew(-5deg);
+  }
+  62% {
+    transform: translate(0, 0) skew(0);
+  }
+}
+
+.status {
+  font-size: 1.2em;
+  margin: 10px 0;
+  padding: 8px;
+  border: 2px solid var(--text-neon-green);
+  border-radius: 5px;
+  background: var(--accent-dark);
+  text-shadow: 0 0 5px var(--text-neon-green);
+}
+
+body.light-mode .status {
+  border-color: var(--text-light);
+  background: var(--accent-light);
+  text-shadow: none;
+}
+
+.status.safe {
+  color: var(--status-safe);
+  border-color: var(--status-safe);
+}
+
+.status.danger {
+  color: var(--status-danger);
+  border-color: var(--status-danger);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#threat-score {
+  font-size: 1em;
+  margin: 10px 0;
+  color: var(--text-neon-cyan);
+}
+
+body.light-mode #threat-score {
+  color: var(--text-light);
+}
+
+#score {
+  font-weight: bold;
+  color: var(--text-neon-magenta);
+}
+
+body.light-mode #score {
+  color: var(--text-light);
+}
+
+button {
+  background: var(--button-bg);
+  color: var(--bg-dark);
+  border: 2px solid var(--text-neon-cyan);
+  padding: 8px 16px;
+  margin: 5px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: var(--button-hover);
+  color: var(--bg-dark);
+  box-shadow: 0 0 10px var(--text-neon-magenta);
+}
+
+body.light-mode button {
+  background: var(--text-light);
+  color: var(--bg-light);
+  border-color: var(--text-light);
+}
+
+body.light-mode button:hover {
+  background: var(--accent-light);
+  box-shadow: 0 0 10px var(--text-light);
+}
+
+#report-btn, #theme-toggle {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+}
